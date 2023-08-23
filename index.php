@@ -81,7 +81,7 @@ $conn->close();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple AWS Webpage</title>
+    <title>Simple Webapp</title>
 </head>
 <body>
     <!-- Display the image -->

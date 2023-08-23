@@ -6,6 +6,8 @@ on:
 
 jobs:
   upload_to_s3:
+    # Skip running release workflow on forks
+    if: github.repository_owner == 'shamimice03'
     runs-on: ubuntu-latest
     # These permissions are needed to interact with GitHub's OIDC Token endpoint.
     permissions:

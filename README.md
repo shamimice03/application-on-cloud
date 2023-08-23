@@ -55,3 +55,11 @@ A demo application for GitHub Actions, S3, S3 mountpoint integration test
     ]
 }
 ```
+
+
+```
+total 4
+drwxr-xr-x 2 ec2-user apache   24 Aug 23 07:11 .
+drwxr-xr-x 6 ec2-user apache   57 Aug 23 06:52 ..
+-rw-rw-r-- 1 ec2-user ec2-user 13 Aug 23 07:11 index.html
+```

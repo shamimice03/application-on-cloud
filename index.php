@@ -2,7 +2,8 @@
 // Load environment variables from the .env file
 require 'vendor/autoload.php'; // Load the Composer autoloader (if you installed vlucas/phpdotenv)
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+//$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable('/var/www/', '.env');
 $dotenv->load();
 
 // Access the environment variables

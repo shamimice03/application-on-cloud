@@ -1,6 +1,8 @@
 name: Artifact to S3 Bucket
 
-on: workflow_dispatch
+on: 
+    workflow_dispatch:
+    push:
 
 jobs:
   upload_to_s3:

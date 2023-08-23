@@ -123,6 +123,6 @@ $conn->close();
     </script>
 
     <h1> Content from EFS <h1>
-    <img src="var/www/media/imagefromefs.jpg" alt="Example Image">
+    <img src="/var/www/media/imagefromefs.jpg" alt="Example Image">
 </body>
 </html>

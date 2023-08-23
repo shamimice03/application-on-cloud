@@ -17,7 +17,7 @@ A demo application for GitHub Actions, S3, S3 mountpoint integration test
                     "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
                 },
                 "StringLike": {
-                    "token.actions.githubusercontent.com:sub": "repo:shamimice03/github-actions-workshops:ref:refs/heads/main"
+                    "token.actions.githubusercontent.com:sub": "repo:shamimice03/application001:ref:refs/heads/main"
                 }
             }
         }
@@ -47,7 +47,7 @@ A demo application for GitHub Actions, S3, S3 mountpoint integration test
                         "sts.amazonaws.com"
                     ],
                     "token.actions.githubusercontent.com:sub": [
-                        "repo:shamimice03/github-actions-workshops:ref:refs/heads/main"
+                        "repo:shamimice03/application001:ref:refs/heads/main"
                     ]
                 }
             }

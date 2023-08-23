@@ -86,6 +86,9 @@ $conn->close();
 </head>
 <body>
     <!-- Display the image -->
+    <h2> Content from EFS </h2>
+    <img src="/var/www/media/imagefromefs.jpg" alt="Example Image">
+
     <img src="/static/welcome.jpg" alt="Example Image">
     <h2>Local (Private) IP Address: <?php echo $local_ip; ?></h2>
     <p><?php echo $db_status; ?></p>
@@ -122,7 +125,5 @@ $conn->close();
         }
     </script>
 
-    <h1> Content from EFS <h1>
-    <img src="/var/www/media/imagefromefs.jpg" alt="Example Image">
 </body>
 </html>

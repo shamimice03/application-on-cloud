@@ -20,9 +20,17 @@ jobs:
           with:
             role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
             aws-region: ${{ secrets.AWS_REGION }}
-        - name: Copy files to the test website with the AWS CLI
-          run: |
-            aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --delete
+        # - name: Copy files to the test website with the AWS CLI
+        #   run: |
+        #     aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
         # With the --delete option, 
         # any files in your S3 bucket that don't exist in your GitHub repository will be deleted during synchronization.
+
+        - name: AWS CodeDeploy
+          uses: sourcetoad/aws-codedeploy-action@v1
+          with:
+            codedeploy_name: CodeDeploy-Demo
+            codedeploy_group: CodeDeploy-DG
+            s3_bucket: ${{ secrets.S3_BUCKET_NAME }}
+            s3_folder: ./

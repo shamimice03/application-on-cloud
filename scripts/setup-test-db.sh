@@ -19,8 +19,9 @@ DBEndpoint=$(echo $DBEndpoint | sed -e 's/^"//' -e 's/"$//')
 DBHostname=$(aws ssm get-parameters --region $REGION --names /wordpress/db/DBHostname --query Parameters[0].Value)
 DBHostname=$(echo $DBHostname | sed -e 's/^"//' -e 's/"$//')
 
-systemctl enable mariadb
-systemctl start mariadb
+sudo yum install -y mariadb-server 
+sudo systemctl enable mariadb
+sudo systemctl start mariadb
 
 # Set Mariadb Root Password
-mysqladmin -u root password $DBPassword
+sudo mysqladmin -u root password $DBPassword

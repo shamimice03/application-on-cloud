@@ -18,12 +18,11 @@ DBPassword=$(echo $DBPassword | sed -e 's/^"//' -e 's/"$//')
 DBUser=$(aws ssm get-parameters --region $REGION --names /wordpress/db/DBUser --query Parameters[0].Value)
 DBUser=$(echo $DBUser | sed -e 's/^"//' -e 's/"$//')
 
-# MySQL command to create the new user
-MYSQL_CMD="CREATE USER '${DBUser}'@'localhost' IDENTIFIED BY '${DBPassword}';"
+#!/bin/bash
 
-# Log in to MySQL and execute the commands
-mysql -u root -p"${RootPassword}" -e "${MYSQL_CMD}"
+# Log in to MySQL as the root user and create the new user, grant privileges, and flush privileges
+mysql -u root -p"${RootPassword}" -e "CREATE USER '${DBUser}'@'localhost' IDENTIFIED BY '${DBPassword}'; GRANT ALL PRIVILEGES ON *.* TO '${DBUser}'@'localhost'; FLUSH PRIVILEGES;"
 
-# Flush privileges
-mysql -u root -p"${RootPassword}" -e "FLUSH PRIVILEGES;"
+echo "New user '${DBUser}' created with global privileges."
+
 

@@ -33,4 +33,4 @@ jobs:
             codedeploy_name: CodeDeploy-Demo
             codedeploy_group: CodeDeploy-DG
             s3_bucket: ${{ secrets.S3_BUCKET_NAME }}
-            s3_folder: ./
+            s3_folder: production

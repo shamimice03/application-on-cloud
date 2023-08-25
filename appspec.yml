@@ -3,15 +3,15 @@ os: linux
 files:
   - source: /
     destination: /var/www/html/
-permissions:
-  - object: /var/www/
-    pattern: '**'
-    mode: 0664
-    owner: ec2-user
-    group: apache
-    type: 
-    - file
-    - directory
+# permissions:
+#   - object: /var/www/
+#     pattern: '**'
+#     mode: 0664
+#     owner: ec2-user
+#     group: apache
+#     type: 
+#     - file
+#     - directory
 hooks:
   BeforeInstall:
     - location: scripts/before-install.sh

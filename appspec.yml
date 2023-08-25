@@ -1,17 +1,24 @@
+# File structure 
+# https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure.html
+# permissions:
+# https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-permissions.html
+# hooks:
+# https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
 version: 0.0
 os: linux
 files:
   - source: /
     destination: /var/www/html/
-# permissions:
-#   - object: /var/www/
-#     pattern: '**'
-#     mode: 0664
-#     owner: ec2-user
-#     group: apache
-#     type: 
-#     - file
-#     - directory
+
+permissions:  
+  - object: /var/www/
+    pattern: '**'
+    mode: "0664"
+    owner: ec2-user
+    group: apache
+    type: 
+    - file
+    - directory
 hooks:
   BeforeInstall:
     - location: scripts/before-install.sh

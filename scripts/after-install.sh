@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# You can use this deployment lifecycle event for tasks such as configuring your application or changing file permissions.
+set -x
 
 # env setup
 REGION="ap-northeast-1"
@@ -31,3 +30,6 @@ echo DBPassword="$DBPassword" >> /var/www/html/.env
 
 # dependency to read phpdotenv file
 composer require vlucas/phpdotenv --working-dir=/var/www/html
+
+# change permissions 
+sudo chown -R ec2-user:apache /var/www/

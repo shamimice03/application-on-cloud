@@ -1,5 +1,5 @@
 #!/bin/bash
-# You can use this deployment lifecycle event for preinstall tasks, such as decrypting files and creating a backup of the current version.
+set -x
 
 # System Updates
 sudo yum update -y

@@ -2,6 +2,8 @@
 
 - ## Steps:
 
+### GitHub Actions:
+
 1. Register `GitHub OIDC` on AWS.
 ![image](https://github.com/shamimice03/of-note/assets/19708705/e7d23ecb-f5bd-4cfa-b5de-2f14f82087ee)
 
@@ -60,7 +62,7 @@
         ]
     }
    ```
-### Ref: 
+#### Ref: 
 - https://github.com/sourcetoad/aws-codedeploy-action#iam-permissions
 
 3. Create a `IAM Role` using following trust relationship and above policies.
@@ -98,6 +100,7 @@ The above role will be assumed by GitHub Actions.
 ![image](https://github.com/shamimice03/of-note/assets/19708705/ba420887-3548-44d0-9876-94c27d14ca67)
 
 ***
+### ON EC2
 
 4. Create another `IAM Role` : `EC2RoleForCodeDeploy` whith
 following policy:
@@ -121,6 +124,7 @@ following policy:
    ![image](https://github.com/shamimice03/of-note/assets/19708705/e0142ecd-e0c4-47da-9936-27c60d5beb86)
 
 ***
+### For AWS CodeDeploy:
 
 5. Create a `ServiceRole` which will be used to create `CodeDeploy` deployment group.
 

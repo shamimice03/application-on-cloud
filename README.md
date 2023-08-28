@@ -1,61 +1,134 @@
-# application-on-cloud
-A demo application for GitHub Actions, S3, S3 mountpoint integration test
+# Integration of `GitHub Actions` and `AWS CodeDeploy`
 
-![image](https://github.com/shamimice03/application-on-cloud/assets/19708705/74877bac-478e-4509-952e-465c134f553d)
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Federated": "arn:aws:iam::391178969547:oidc-provider/token.actions.githubusercontent.com"
+- ## Steps:
+
+1. Register `GitHub OIDC` on AWS.
+![image](https://github.com/shamimice03/of-note/assets/19708705/e7d23ecb-f5bd-4cfa-b5de-2f14f82087ee)
+
+2. Create two policy. One for S3 bucket (where application code or artifact will be stored) and another one for CodeDeploy.
+   
+   Suppose, `S3 Bucket` name: `application001`
+   - Policy for S3:
+   ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:DeleteObject"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::application001/*"
+                ]
             },
-            "Action": "sts:AssumeRoleWithWebIdentity",
-            "Condition": {
-                "StringEquals": {
-                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+            {
+                "Effect": "Allow",
+                "Action": "s3:ListBucket",
+                "Resource": "arn:aws:s3:::application001"
+            }
+        ]
+    }
+   ```
+
+   - Policy for CodeDeploy:
+   ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": "codedeploy:CreateDeployment",
+                "Resource": [
+                    "arn:aws:codedeploy:ap-northeast-1:<account-number>:deploymentgroup:<application-name>/<Deployment-group-name>"
+                ]
+            },
+            {
+                "Sid": "VisualEditor1",
+                "Effect": "Allow",
+                "Action": [
+                    "codedeploy:Get*",
+                    "codedeploy:Batch*",
+                    "codedeploy:RegisterApplicationRevision",
+                    "codedeploy:List*"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
+   ```
+### Ref: 
+- https://github.com/sourcetoad/aws-codedeploy-action#iam-permissions
+
+3. Create a `IAM Role` using following trust relationship and above policies.
+    ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Federated": "arn:aws:iam::<account-number>:oidc-provider/token.actions.githubusercontent.com"
                 },
-                "StringLike": {
-                    "token.actions.githubusercontent.com:sub": "repo:shamimice03/application001:ref:refs/heads/main"
+                "Action": "sts:AssumeRoleWithWebIdentity",
+                "Condition": {
+                    "StringEquals": {
+                        "token.actions.githubusercontent.com:sub": "repo:shamimice03/application-on-cloud:ref:refs/heads/main",
+                        "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+                    }
                 }
             }
-        }
-    ]
-}
-```
+        ]
+    }
+    ```
+
+![image](https://github.com/shamimice03/application-on-cloud/assets/19708705/74877bac-478e-4509-952e-465c134f553d)
+
 
 ![image](https://github.com/shamimice03/application-on-cloud/assets/19708705/3bfc1bbb-78d4-4565-9e60-97466e28563a)
 
 
 ![image](https://github.com/shamimice03/application-on-cloud/assets/19708705/6bd4f669-4fc0-4423-88f9-0a3357b2d56e)
 
+The above role will be assumed by GitHub Actions.
 
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "sts:AssumeRoleWithWebIdentity",
-            "Principal": {
-                "Federated": "arn:aws:iam::391178969547:oidc-provider/token.actions.githubusercontent.com"
-            },
-            "Condition": {
-                "StringEquals": {
-                    "token.actions.githubusercontent.com:aud": [
-                        "sts.amazonaws.com"
-                    ],
-                    "token.actions.githubusercontent.com:sub": [
-                        "repo:shamimice03/application001:ref:refs/heads/main"
-                    ]
-                }
+![image](https://github.com/shamimice03/of-note/assets/19708705/ba420887-3548-44d0-9876-94c27d14ca67)
+
+***
+
+4. Create another `IAM Role` : `EC2RoleForCodeDeploy` whith
+following policy:
+    ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "s3:GetObject",
+                    "s3:GetObjectVersion",
+                    "s3:ListBucket"
+                ],
+                "Effect": "Allow",
+                "Resource": "*"
             }
-        }
-    ]
-}
-```
+        ]
+    }
+    ```
+   - Attach other necessary policy as per needs and attach the role with EC2 instance.
+   ![image](https://github.com/shamimice03/of-note/assets/19708705/e0142ecd-e0c4-47da-9936-27c60d5beb86)
 
+***
+
+5. Create a `ServiceRole` which will be used to create `CodeDeploy` deployment group.
+
+![image](https://github.com/shamimice03/of-note/assets/19708705/e3d56b03-e5fc-4225-af3f-5fd5d888581e)
+
+6. create `CodeDeploy` applicaton and deployment group.
+
+****
 
 `appspec.yaml` hooks:
 - https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html

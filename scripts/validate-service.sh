@@ -2,7 +2,9 @@
 
 # Secrets
 REGION="ap-northeast-1"
+
 DBHostname="localhost"
+
 DBPassword=$(aws ssm get-parameters --region $REGION --names /wordpress/db/DBPassword --with-decryption --query Parameters[0].Value)
 DBPassword=$(echo $DBPassword | sed -e 's/^"//' -e 's/"$//')
 
